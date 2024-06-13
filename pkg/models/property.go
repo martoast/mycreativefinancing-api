@@ -34,6 +34,7 @@ type Property struct {
 	NearbyHomes        *string  `json:"nearby_homes"`          // JSON array of nearby_homes
 	PriceHistory       *string  `json:"price_history"`         // JSON array of price history
 	TaxHistory         *string  `json:"tax_history"`           // JSON array of tax history
+	ContactRecipients  *string  `json:"contact_recipients"`    // JSON array of tax history
 	MonthlyHoaFee      *int     `json:"monthly_hoa_fee"`       // INT
 }
 
@@ -121,6 +122,7 @@ func SeedProperties() {
 			NearbyHomes:        newString("[\"Home A\", \"Home B\"]"),
 			PriceHistory:       newString("[{\"date\": \"2022-01-01\", \"price\": 295000}, {\"date\": \"2023-01-01\", \"price\": 300000}]"),
 			TaxHistory:         newString("[{\"year\": 2022, \"tax\": 3500}, {\"year\": 2023, \"tax\": 3600}]"),
+			ContactRecipients:  newString("[{\"agent_reason\":1,\"zpro\":null,\"recent_sales\":0,\"review_count\":8,\"display_name\":\"Elizabeth Jimenez\",\"zuid\":\"X1-ZU12a3ye9stjcw9_26nu5\",\"rating_average\":5,\"badge_type\":\"Premier Agent\",\"phone\":{\"prefix\":\"484\",\"areacode\":\"424\",\"number\":\"9901\"},\"image_url\":\"https://photos.zillowstatic.com/fp/a9702d055054a53bd296d7175519fb29-h_n.jpg\"}]"),
 			MonthlyHoaFee:      newInt(1000),
 		},
 	}
