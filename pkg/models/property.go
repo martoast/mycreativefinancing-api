@@ -72,7 +72,7 @@ func GetPaginatedProperties(limit int, offset int, sold *bool) ([]Property, int6
 	}
 
 	query.Count(&total)
-	query.Limit(limit).Offset(offset).Find(&properties)
+	query.Order("created_at DESC").Limit(limit).Offset(offset).Find(&properties)
 
 	return properties, total
 }
@@ -99,32 +99,33 @@ func SeedProperties() {
 	// Example set of properties to seed
 	properties := []Property{
 		{
-			Address:            "4949 Corrado Ave, Ave Maria, FL 34142",
-			Price:              newFloat64(300000),
-			Description:        newString("Beautiful family home in a quiet neighborhood."),
-			Images:             newString("[\"https://static.tildacdn.com/stor3630-6334-4663-b532-393032356238/65960768.jpg\", \"https://static.tildacdn.com/stor3663-3339-4534-b332-393563363363/61347039.jpg\"]"),
-			Sold:               newBool(false),
-			Bedrooms:           newInt(3),
-			Bathrooms:          newFloat64(2.5),
-			RentZestimate:      newFloat64(2500),
-			Zestimate:          newFloat64(300000),
-			PropertyType:       newString("Single Family"),
-			Zoning:             newString("R-1:SINGLE FAM-RES"),
-			YearBuilt:          newInt(1990),
-			LotSize:            newInt(5000),
-			LivingArea:         newInt(3000),
-			PricePerSquareFoot: newFloat64(300),
-			PurchasePrice:      newFloat64(300000),
-			BalanceToClose:     newFloat64(10000),
-			MonthlyHoldingCost: newFloat64(5000),
-			InterestRate:       newFloat64(300),
-			NearbyHospitals:    newString("[\"Hospital A\", \"Hospital B\"]"),
-			NearbySchools:      newString("[\"School A\", \"School B\"]"),
-			NearbyHomes:        newString("[\"Home A\", \"Home B\"]"),
-			PriceHistory:       newString("[{\"date\": \"2022-01-01\", \"price\": 295000}, {\"date\": \"2023-01-01\", \"price\": 300000}]"),
-			TaxHistory:         newString("[{\"year\": 2022, \"tax\": 3500}, {\"year\": 2023, \"tax\": 3600}]"),
-			ContactRecipients:  newString("[{\"agent_reason\":1,\"zpro\":null,\"recent_sales\":0,\"review_count\":8,\"display_name\":\"Elizabeth Jimenez\",\"zuid\":\"X1-ZU12a3ye9stjcw9_26nu5\",\"rating_average\":5,\"badge_type\":\"Premier Agent\",\"phone\":{\"prefix\":\"484\",\"areacode\":\"424\",\"number\":\"9901\"},\"image_url\":\"https://photos.zillowstatic.com/fp/a9702d055054a53bd296d7175519fb29-h_n.jpg\"}]"),
-			MonthlyHoaFee:      newInt(1000),
+			Address:                "4949 Corrado Ave, Ave Maria, FL 34142",
+			Price:                  newFloat64(300000),
+			Description:            newString("Beautiful family home in a quiet neighborhood."),
+			Images:                 newString("[\"https://static.tildacdn.com/stor3630-6334-4663-b532-393032356238/65960768.jpg\", \"https://static.tildacdn.com/stor3663-3339-4534-b332-393563363363/61347039.jpg\"]"),
+			Sold:                   newBool(false),
+			Bedrooms:               newInt(3),
+			Bathrooms:              newFloat64(2.5),
+			RentZestimate:          newFloat64(2500),
+			Zestimate:              newFloat64(300000),
+			PropertyType:           newString("Single Family"),
+			Zoning:                 newString("R-1:SINGLE FAM-RES"),
+			YearBuilt:              newInt(1990),
+			LotSize:                newInt(5000),
+			LivingArea:             newInt(3000),
+			PricePerSquareFoot:     newFloat64(300),
+			PurchasePrice:          newFloat64(300000),
+			BalanceToClose:         newFloat64(10000),
+			MonthlyHoldingCost:     newFloat64(5000),
+			InterestRate:           newFloat64(300),
+			NearbyHospitals:        newString("[\"Hospital A\", \"Hospital B\"]"),
+			NearbySchools:          newString("[\"School A\", \"School B\"]"),
+			NearbyHomes:            newString("[\"Home A\", \"Home B\"]"),
+			PriceHistory:           newString("[{\"date\": \"2022-01-01\", \"price\": 295000}, {\"date\": \"2023-01-01\", \"price\": 300000}]"),
+			TaxHistory:             newString("[{\"year\": 2022, \"tax\": 3500}, {\"year\": 2023, \"tax\": 3600}]"),
+			ContactRecipients:      newString("[{\"agent_reason\":1,\"zpro\":null,\"recent_sales\":0,\"review_count\":8,\"display_name\":\"Elizabeth Jimenez\",\"zuid\":\"X1-ZU12a3ye9stjcw9_26nu5\",\"rating_average\":5,\"badge_type\":\"Premier Agent\",\"phone\":{\"prefix\":\"484\",\"areacode\":\"424\",\"number\":\"9901\"},\"image_url\":\"https://photos.zillowstatic.com/fp/a9702d055054a53bd296d7175519fb29-h_n.jpg\"}]"),
+			MonthlyHoaFee:          newInt(1000),
+			TransactionDocumentUrl: "https://docs.google.com/spreadsheets/d/1-Ot5O9Fh7mOVQa5SJieBGrU9rIaItGVyZmEXwz4aAJY/edit?gid=0#gid=0",
 		},
 	}
 
