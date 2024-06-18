@@ -10,32 +10,33 @@ var db *gorm.DB
 
 type Property struct {
 	gorm.Model
-	Address            string   `json:"address"`
-	Price              *float64 `json:"price"`                 // DECIMAL(10, 2)
-	Description        *string  `json:"description"`           // TEXT
-	Images             *string  `json:"images"`                // JSON array of image URLs or a string of delimited URLs
-	Sold               *bool    `json:"sold"`                  // BOOLEAN
-	Bedrooms           *int     `json:"bedrooms"`              // INT
-	Bathrooms          *float64 `json:"bathrooms"`             // DECIMAL(3, 1)
-	RentZestimate      *float64 `json:"rent_zestimate"`        // DECIMAL(10, 2)
-	Zestimate          *float64 `json:"zestimate"`             // DECIMAL(10, 2)
-	PropertyType       *string  `json:"property_type"`         // VARCHAR(255)
-	Zoning             *string  `json:"zoning"`                // VARCHAR(255)
-	YearBuilt          *int     `json:"year_built"`            // INT
-	LotSize            *int     `json:"lot_size"`              // INT
-	PricePerSquareFoot *float64 `json:"price_per_square_foot"` // DECIMAL(10, 2)
-	LivingArea         *int     `json:"living_area"`           // INT
-	PurchasePrice      *float64 `json:"purchase_price"`        // DECIMAL(10,2)
-	BalanceToClose     *float64 `json:"balance_to_close"`      // DECIMAL(10,2)
-	MonthlyHoldingCost *float64 `json:"monthly_holding_cost"`  // DECIMAL(10,2)
-	InterestRate       *float64 `json:"interest_rate"`         // DECIMAL(10,2)
-	NearbyHospitals    *string  `json:"nearby_hospitals"`      // JSON array of nearby_hospitals
-	NearbySchools      *string  `json:"nearby_schools"`        // JSON array of nearby_schools
-	NearbyHomes        *string  `json:"nearby_homes"`          // JSON array of nearby_homes
-	PriceHistory       *string  `json:"price_history"`         // JSON array of price history
-	TaxHistory         *string  `json:"tax_history"`           // JSON array of tax history
-	ContactRecipients  *string  `json:"contact_recipients"`    // JSON array of tax history
-	MonthlyHoaFee      *int     `json:"monthly_hoa_fee"`       // INT
+	Address                string   `json:"address"`
+	Price                  *float64 `json:"price"`                    // DECIMAL(10, 2)
+	Description            *string  `json:"description"`              // TEXT
+	Images                 *string  `json:"images"`                   // JSON array of image URLs or a string of delimited URLs
+	Sold                   *bool    `json:"sold"`                     // BOOLEAN
+	Bedrooms               *int     `json:"bedrooms"`                 // INT
+	Bathrooms              *float64 `json:"bathrooms"`                // DECIMAL(3, 1)
+	RentZestimate          *float64 `json:"rent_zestimate"`           // DECIMAL(10, 2)
+	Zestimate              *float64 `json:"zestimate"`                // DECIMAL(10, 2)
+	PropertyType           *string  `json:"property_type"`            // VARCHAR(255)
+	Zoning                 *string  `json:"zoning"`                   // VARCHAR(255)
+	YearBuilt              *int     `json:"year_built"`               // INT
+	LotSize                *int     `json:"lot_size"`                 // INT
+	PricePerSquareFoot     *float64 `json:"price_per_square_foot"`    // DECIMAL(10, 2)
+	LivingArea             *int     `json:"living_area"`              // INT
+	PurchasePrice          *float64 `json:"purchase_price"`           // DECIMAL(10,2)
+	BalanceToClose         *float64 `json:"balance_to_close"`         // DECIMAL(10,2)
+	MonthlyHoldingCost     *float64 `json:"monthly_holding_cost"`     // DECIMAL(10,2)
+	InterestRate           *float64 `json:"interest_rate"`            // DECIMAL(10,2)
+	NearbyHospitals        *string  `json:"nearby_hospitals"`         // JSON array of nearby_hospitals
+	NearbySchools          *string  `json:"nearby_schools"`           // JSON array of nearby_schools
+	NearbyHomes            *string  `json:"nearby_homes"`             // JSON array of nearby_homes
+	PriceHistory           *string  `json:"price_history"`            // JSON array of price history
+	TaxHistory             *string  `json:"tax_history"`              // JSON array of tax history
+	ContactRecipients      *string  `json:"contact_recipients"`       // JSON array of tax history
+	MonthlyHoaFee          *int     `json:"monthly_hoa_fee"`          // INT
+	TransactionDocumentUrl string   `json:"transaction_document_url"` // string url of transaction document
 }
 
 func init() {
