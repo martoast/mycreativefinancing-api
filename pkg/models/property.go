@@ -34,9 +34,13 @@ type Property struct {
 	NearbyHomes            *string  `json:"nearby_homes"`             // JSON array of nearby_homes
 	PriceHistory           *string  `json:"price_history"`            // JSON array of price history
 	TaxHistory             *string  `json:"tax_history"`              // JSON array of tax history
-	ContactRecipients      *string  `json:"contact_recipients"`       // JSON array of tax history
+	ContactRecipients      *string  `json:"contact_recipients"`       // JSON array of contact_recipients
 	MonthlyHoaFee          *int     `json:"monthly_hoa_fee"`          // INT
 	TransactionDocumentUrl string   `json:"transaction_document_url"` // string url of transaction document
+	Escrow                 *float64 `json:"escrow"`                   // DECIMAL(10, 2)
+	DealHolder             *string  `json:"deal_holder"`
+	InHouseDeal            *bool    `json:"in_house_deal"`      // BOOLEAN
+	RentalRestriction      *bool    `json:"rental_restriction"` // BOOLEAN
 }
 
 func init() {
