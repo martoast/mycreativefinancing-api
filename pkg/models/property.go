@@ -42,6 +42,7 @@ type Property struct {
 	DealHolder             *string  `json:"deal_holder"`
 	InHouseDeal            *bool    `json:"in_house_deal"`      // BOOLEAN
 	RentalRestriction      *bool    `json:"rental_restriction"` // BOOLEAN
+	PriceBreakDown         *string  `json:"price_breakdown"`    // VARCHAR(255)
 }
 
 func init() {
@@ -131,6 +132,7 @@ func SeedProperties() {
 			ContactRecipients:      newString("[{\"agent_reason\":1,\"zpro\":null,\"recent_sales\":0,\"review_count\":8,\"display_name\":\"Elizabeth Jimenez\",\"zuid\":\"X1-ZU12a3ye9stjcw9_26nu5\",\"rating_average\":5,\"badge_type\":\"Premier Agent\",\"phone\":{\"prefix\":\"484\",\"areacode\":\"424\",\"number\":\"9901\"},\"image_url\":\"https://photos.zillowstatic.com/fp/a9702d055054a53bd296d7175519fb29-h_n.jpg\"}]"),
 			MonthlyHoaFee:          newInt(1000),
 			TransactionDocumentUrl: "https://docs.google.com/spreadsheets/d/1-Ot5O9Fh7mOVQa5SJieBGrU9rIaItGVyZmEXwz4aAJY/edit?gid=0#gid=0",
+			PriceBreakDown:         newString("This is the price breakdown"),
 		},
 	}
 
