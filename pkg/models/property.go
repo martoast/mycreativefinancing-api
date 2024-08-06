@@ -40,9 +40,10 @@ type Property struct {
 	BenefitSheetUrl        string   `json:"benefit_sheet_url"`
 	Escrow                 *float64 `json:"escrow"` // DECIMAL(10, 2)
 	DealHolder             *string  `json:"deal_holder"`
-	InHouseDeal            *bool    `json:"in_house_deal"`      // BOOLEAN
-	RentalRestriction      *bool    `json:"rental_restriction"` // BOOLEAN
-	PriceBreakDown         *string  `json:"price_breakdown"`    // VARCHAR(255)
+	InHouseDeal            *bool    `json:"in_house_deal"`       // BOOLEAN
+	RentalRestriction      *bool    `json:"rental_restriction"`  // BOOLEAN
+	PriceBreakDown         *string  `json:"price_breakdown"`     // VARCHAR(255)
+	AdditionalBenefits     *string  `json:"additional_benefits"` // VARCHAR(255)
 }
 
 func init() {
@@ -133,6 +134,7 @@ func SeedProperties() {
 			MonthlyHoaFee:          newInt(1000),
 			TransactionDocumentUrl: "https://docs.google.com/spreadsheets/d/1-Ot5O9Fh7mOVQa5SJieBGrU9rIaItGVyZmEXwz4aAJY/edit?gid=0#gid=0",
 			PriceBreakDown:         newString("This is the price breakdown"),
+			AdditionalBenefits:     newString("This is the additional benefits"),
 		},
 	}
 
