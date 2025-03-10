@@ -93,6 +93,19 @@ func GetPropertyById(w http.ResponseWriter, r *http.Request) {
 func CreateProperty(w http.ResponseWriter, r *http.Request) {
 	PropertyModel := &models.Property{}
 	utils.ParseBody(r, PropertyModel)
+
+	// Set default value for CreatedBy if not provided
+	if PropertyModel.CreatedBy == nil {
+		defaultCreatedBy := "user"
+		PropertyModel.CreatedBy = &defaultCreatedBy
+	} else {
+		// Validate that CreatedBy is either "user" or "admin"
+		if *PropertyModel.CreatedBy != "user" && *PropertyModel.CreatedBy != "admin" {
+			http.Error(w, "CreatedBy must be either 'user' or 'admin'", http.StatusBadRequest)
+			return
+		}
+	}
+
 	b := PropertyModel.CreateProperty()
 	res, err := json.Marshal(b)
 	if err != nil {
@@ -166,6 +179,16 @@ func UpdateProperty(w http.ResponseWriter, r *http.Request) {
 	propertyDetails.RentalRestriction = updateProperty.RentalRestriction
 	propertyDetails.PriceBreakDown = updateProperty.PriceBreakDown
 	propertyDetails.AdditionalBenefits = updateProperty.AdditionalBenefits
+
+	// Update CreatedBy if provided and valid
+	if updateProperty.CreatedBy != nil {
+		if *updateProperty.CreatedBy == "user" || *updateProperty.CreatedBy == "admin" {
+			propertyDetails.CreatedBy = updateProperty.CreatedBy
+		} else {
+			http.Error(w, "CreatedBy must be either 'user' or 'admin'", http.StatusBadRequest)
+			return
+		}
+	}
 
 	db.Save(&propertyDetails)
 	res, err := json.Marshal(propertyDetails)

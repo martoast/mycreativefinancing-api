@@ -44,6 +44,7 @@ type Property struct {
 	RentalRestriction      *bool    `json:"rental_restriction"`  // BOOLEAN
 	PriceBreakDown         *string  `json:"price_breakdown"`     // VARCHAR(255)
 	AdditionalBenefits     *string  `json:"additional_benefits"` // VARCHAR(255)
+	CreatedBy              *string  `json:"created_by"`          // VARCHAR(255) - can be "user" or "admin"
 }
 
 func init() {
@@ -135,6 +136,7 @@ func SeedProperties() {
 			TransactionDocumentUrl: "https://docs.google.com/spreadsheets/d/1-Ot5O9Fh7mOVQa5SJieBGrU9rIaItGVyZmEXwz4aAJY/edit?gid=0#gid=0",
 			PriceBreakDown:         newString("This is the price breakdown"),
 			AdditionalBenefits:     newString("This is the additional benefits"),
+			CreatedBy:              newString("admin"),
 		},
 	}
 
