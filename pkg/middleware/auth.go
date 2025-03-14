@@ -14,9 +14,10 @@ const UserContextKey contextKey = "user"
 
 // User info to store in context
 type UserContext struct {
-	ID      uint
-	Email   string
-	IsAdmin bool
+	ID         uint
+	Email      string
+	IsAdmin    bool
+	IsEmployee bool // Add this line
 }
 
 // AuthMiddleware checks for a valid JWT token
@@ -47,9 +48,10 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		// Add user info to context
 		ctx := context.WithValue(r.Context(), UserContextKey, UserContext{
-			ID:      claims.UserID,
-			Email:   claims.Email,
-			IsAdmin: claims.IsAdmin,
+			ID:         claims.UserID,
+			Email:      claims.Email,
+			IsAdmin:    claims.IsAdmin,
+			IsEmployee: claims.IsEmployee, // Add this line
 		})
 
 		// Call the next handler with the updated context

@@ -11,8 +11,9 @@ import (
 
 // Request structure for registration
 type RegisterRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+	IsEmployee bool   `json:"is_employee"` // Add this line
 }
 
 // Request structure for login
@@ -39,7 +40,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	// Create new user
 	user := &models.User{
-		Email: req.Email,
+		Email:      req.Email,
+		IsEmployee: req.IsEmployee, // Add this line
 	}
 
 	// Hash the password
@@ -60,7 +62,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate JWT token
-	token, err := utils.GenerateToken(createdUser.ID, createdUser.Email, createdUser.IsAdmin)
+	token, err := utils.GenerateToken(createdUser.ID, createdUser.Email, createdUser.IsAdmin, createdUser.IsEmployee)
 	if err != nil {
 		http.Error(w, "Failed to generate token", http.StatusInternalServerError)
 		return
@@ -97,7 +99,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate JWT token
-	token, err := utils.GenerateToken(user.ID, user.Email, user.IsAdmin)
+	token, err := utils.GenerateToken(user.ID, user.Email, user.IsAdmin, user.IsEmployee)
 	if err != nil {
 		http.Error(w, "Failed to generate token", http.StatusInternalServerError)
 		return

@@ -22,21 +22,23 @@ func getJWTSecret() string {
 
 // Claims structure for JWT
 type Claims struct {
-	UserID  uint   `json:"user_id"`
-	Email   string `json:"email"`
-	IsAdmin bool   `json:"is_admin"`
+	UserID     uint   `json:"user_id"`
+	Email      string `json:"email"`
+	IsAdmin    bool   `json:"is_admin"`
+	IsEmployee bool   `json:"is_employee"` // Add this line
 	jwt.RegisteredClaims
 }
 
 // Generate a new JWT token
-func GenerateToken(userID uint, email string, isAdmin bool) (string, error) {
+func GenerateToken(userID uint, email string, isAdmin bool, isEmployee bool) (string, error) {
 	// Set expiration time - 24 hours
 	expirationTime := time.Now().Add(24 * time.Hour)
 
 	claims := &Claims{
-		UserID:  userID,
-		Email:   email,
-		IsAdmin: isAdmin,
+		UserID:     userID,
+		Email:      email,
+		IsAdmin:    isAdmin,
+		IsEmployee: isEmployee, // Add this line
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
