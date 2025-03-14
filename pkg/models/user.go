@@ -33,7 +33,7 @@ func init() {
 	db.Model(&User{}).Where("is_employee = ?", true).Count(&employeeCount)
 	if employeeCount == 0 {
 		// Create default employee user
-		_, err := CreateEmployeeUser("alexmartos96@gmail.com", "Testing123")
+		_, err := CreateEmployeeUser("employee@gmail.com", "Testing123")
 		if err != nil {
 			panic("Failed to create employee user: " + err.Error())
 		}
