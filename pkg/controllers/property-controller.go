@@ -146,6 +146,7 @@ func UpdateProperty(w http.ResponseWriter, r *http.Request) {
 	}
 	propertyDetails, db := models.GetPropertyById(ID)
 
+	propertyDetails.Address = updateProperty.Address
 	propertyDetails.Price = updateProperty.Price
 	propertyDetails.Description = updateProperty.Description
 	propertyDetails.Images = updateProperty.Images
