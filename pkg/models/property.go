@@ -40,6 +40,9 @@ type Property struct {
 	BenefitSheetUrl        string   `json:"benefit_sheet_url"`
 	Escrow                 *float64 `json:"escrow"` // DECIMAL(10, 2)
 	DealHolder             *string  `json:"deal_holder"`
+	DealHolderPhone        *string  `json:"deal_holder_phone"`
+	DealHolderEmail        *string  `json:"deal_holder_email"`
+	AssignmentFee          *float64 `json:"assignment_fee"`
 	InHouseDeal            *bool    `json:"in_house_deal"`       // BOOLEAN
 	RentalRestriction      *bool    `json:"rental_restriction"`  // BOOLEAN
 	PriceBreakDown         *string  `json:"price_breakdown"`     // VARCHAR(255)
