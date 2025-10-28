@@ -2,9 +2,10 @@ version: '3'
 
 services:
   db:
+    container_name: mycreativefinancing-db
     image: mysql
     networks:
-      - my_network
+      - mycreativefinancing_network
     restart: on-failure
     env_file:
       - .env
@@ -17,11 +18,12 @@ services:
     expose:
       - "3306"
     volumes:
-      - my-datavolume:/var/lib/mysql
+      - mycreativefinancing-datavolume:/var/lib/mysql
   api:
+    container_name: mycreativefinancing-api
     build: .
     networks:
-      - my_network
+      - mycreativefinancing_network
     env_file:
       - .env
     restart: on-failure
@@ -35,6 +37,7 @@ services:
       - db
     entrypoint: ["/app/wait-for-it.sh", "db:3306", "--", "./main"]
 networks:
-  my_network:
+  mycreativefinancing_network:
+    driver: bridge
 volumes:
-  my-datavolume:
+  mycreativefinancing-datavolume:
