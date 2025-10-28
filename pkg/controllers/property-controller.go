@@ -183,6 +183,7 @@ func UpdateProperty(w http.ResponseWriter, r *http.Request) {
 	propertyDetails.RentalRestriction = updateProperty.RentalRestriction
 	propertyDetails.PriceBreakDown = updateProperty.PriceBreakDown
 	propertyDetails.AdditionalBenefits = updateProperty.AdditionalBenefits
+	propertyDetails.ReApiId = updateProperty.ReApiId
 
 	// Update CreatedBy if provided and valid
 	if updateProperty.CreatedBy != nil {

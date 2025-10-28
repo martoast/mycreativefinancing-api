@@ -48,6 +48,7 @@ type Property struct {
 	PriceBreakDown         *string  `json:"price_breakdown"`     // VARCHAR(255)
 	AdditionalBenefits     *string  `json:"additional_benefits"` // VARCHAR(255)
 	CreatedBy              *string  `json:"created_by"`          // VARCHAR(255) - can be "user" or "admin"
+	ReApiId                *string  `json:"re_api_id"`           // VARCHAR(255) - Real Estate API ID
 }
 
 func init() {
@@ -140,6 +141,7 @@ func SeedProperties() {
 			PriceBreakDown:         newString("This is the price breakdown"),
 			AdditionalBenefits:     newString("This is the additional benefits"),
 			CreatedBy:              newString("admin"),
+			ReApiId:                newString("4574363"),
 		},
 	}
 
