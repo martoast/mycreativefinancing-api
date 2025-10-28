@@ -1,3 +1,4 @@
+// pkg/controllers/property-controller.go
 package controllers
 
 import (
@@ -19,6 +20,7 @@ func GetProperties(w http.ResponseWriter, r *http.Request) {
 	pageStr := r.URL.Query().Get("page")
 	pageSizeStr := r.URL.Query().Get("pageSize")
 	soldParam := r.URL.Query().Get("sold")
+	searchQuery := r.URL.Query().Get("search")
 
 	// Default values if not provided
 	page := 1
@@ -54,8 +56,17 @@ func GetProperties(w http.ResponseWriter, r *http.Request) {
 	// Calculate offset
 	offset := (page - 1) * pageSize
 
-	// Get paginated properties from the model
-	newProperties, total := models.GetPaginatedProperties(pageSize, offset, sold)
+	// Get paginated properties from the model with optional search
+	var newProperties []models.Property
+	var total int64
+
+	if searchQuery != "" {
+		// Search across all properties
+		newProperties, total = models.SearchProperties(searchQuery, pageSize, offset, sold)
+	} else {
+		// Get paginated properties normally
+		newProperties, total = models.GetPaginatedProperties(pageSize, offset, sold)
+	}
 
 	// Create response with properties and total count
 	response := map[string]interface{}{
@@ -63,6 +74,7 @@ func GetProperties(w http.ResponseWriter, r *http.Request) {
 		"total":      total,
 		"page":       page,
 		"pageSize":   pageSize,
+		"search":     searchQuery,
 	}
 
 	res, err := json.Marshal(response)

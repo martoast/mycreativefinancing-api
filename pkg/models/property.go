@@ -1,6 +1,8 @@
 package models
 
 import (
+	"strings"
+
 	"api/pkg/config"
 
 	"gorm.io/gorm"
@@ -85,6 +87,31 @@ func GetPaginatedProperties(limit int, offset int, sold *bool) ([]Property, int6
 
 	query.Count(&total)
 	query.Order("created_at DESC").Limit(limit).Offset(offset).Find(&properties)
+
+	return properties, total
+}
+
+func SearchProperties(query string, limit int, offset int, sold *bool) ([]Property, int64) {
+	var properties []Property
+	var total int64
+
+	// Prepare the base query
+	dbQuery := db.Model(&Property{})
+
+	// Apply sold filter if provided
+	if sold != nil {
+		dbQuery = dbQuery.Where("sold = ?", *sold)
+	}
+
+	// Search across address field
+	searchPattern := "%" + strings.ToLower(query) + "%"
+	dbQuery = dbQuery.Where("LOWER(address) LIKE ?", searchPattern)
+
+	// Get total count
+	dbQuery.Count(&total)
+
+	// Get paginated results
+	dbQuery.Order("created_at DESC").Limit(limit).Offset(offset).Find(&properties)
 
 	return properties, total
 }
