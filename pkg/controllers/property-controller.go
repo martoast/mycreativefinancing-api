@@ -186,6 +186,7 @@ func UpdateProperty(w http.ResponseWriter, r *http.Request) {
 	propertyDetails.ContactRecipients = updateProperty.ContactRecipients
 	propertyDetails.TransactionDocumentUrl = updateProperty.TransactionDocumentUrl
 	propertyDetails.BenefitSheetUrl = updateProperty.BenefitSheetUrl
+	propertyDetails.DocsUrl = updateProperty.DocsUrl
 	propertyDetails.Escrow = updateProperty.Escrow
 	propertyDetails.DealHolder = updateProperty.DealHolder
 	propertyDetails.DealHolderPhone = updateProperty.DealHolderPhone
