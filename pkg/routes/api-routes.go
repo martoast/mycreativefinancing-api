@@ -12,6 +12,10 @@ var RegisterRoutes = func(router *mux.Router) {
 	router.HandleFunc("/auth/register", controllers.Register).Methods("POST")
 	router.HandleFunc("/auth/login", controllers.Login).Methods("POST")
 
+	// NEW: Public endpoint to write property to Google Sheets
+	// ⚠️ THIS MUST COME BEFORE /properties routes!
+	router.HandleFunc("/properties/write-to-sheet", controllers.WritePropertyToSheet).Methods("POST")
+
 	// Public property routes (read-only and create)
 	router.HandleFunc("/properties", controllers.GetProperties).Methods("GET")
 	router.HandleFunc("/properties/{PropertyId}", controllers.GetPropertyById).Methods("GET")
