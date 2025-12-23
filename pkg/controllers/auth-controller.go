@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"api/pkg/middleware"
 	"api/pkg/models"
 	"api/pkg/utils"
 	"encoding/json"
@@ -25,6 +26,17 @@ type LoginRequest struct {
 // Response structure for auth
 type AuthResponse struct {
 	Token string `json:"token"`
+}
+
+// Request structure for password change
+type ChangePasswordRequest struct {
+	CurrentPassword string `json:"current_password"`
+	NewPassword     string `json:"new_password"`
+}
+
+// Response structure for password change
+type ChangePasswordResponse struct {
+	Message string `json:"message"`
 }
 
 // Register a new user
@@ -109,4 +121,68 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(AuthResponse{Token: token})
+}
+
+// ChangeAdminPassword allows an admin user to change their password
+func ChangeAdminPassword(w http.ResponseWriter, r *http.Request) {
+	// Get user from context (set by AuthMiddleware)
+	userContext, ok := middleware.GetUserFromContext(r.Context())
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is an admin
+	if !userContext.IsAdmin {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	// Parse request body
+	var req ChangePasswordRequest
+	utils.ParseBody(r, &req)
+
+	// Validate input
+	if req.CurrentPassword == "" || req.NewPassword == "" {
+		http.Error(w, "Current password and new password are required", http.StatusBadRequest)
+		return
+	}
+
+	// Validate new password length
+	if len(req.NewPassword) < 8 {
+		http.Error(w, "New password must be at least 8 characters", http.StatusBadRequest)
+		return
+	}
+
+	// Fetch the full user record from database
+	user, err := models.GetUserByID(userContext.ID)
+	if err != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+
+	// Verify current password
+	if !user.CheckPassword(req.CurrentPassword) {
+		http.Error(w, "Current password is incorrect", http.StatusUnauthorized)
+		return
+	}
+
+	// Hash new password
+	if err := user.HashPassword(req.NewPassword); err != nil {
+		http.Error(w, "Failed to hash password", http.StatusInternalServerError)
+		return
+	}
+
+	// Save to database
+	if err := models.UpdateUserPassword(user); err != nil {
+		http.Error(w, "Failed to update password", http.StatusInternalServerError)
+		return
+	}
+
+	// Return success response
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(ChangePasswordResponse{
+		Message: "Password changed successfully",
+	})
 }

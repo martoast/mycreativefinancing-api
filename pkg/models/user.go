@@ -123,3 +123,15 @@ func GetUserByEmail(email string) (*User, error) {
 	}
 	return &user, nil
 }
+
+func GetUserByID(id uint) (*User, error) {
+	var user User
+	if err := db.First(&user, id).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func UpdateUserPassword(user *User) error {
+	return db.Model(user).Update("password", user.Password).Error
+}

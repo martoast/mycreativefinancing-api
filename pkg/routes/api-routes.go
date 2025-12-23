@@ -28,4 +28,7 @@ var RegisterRoutes = func(router *mux.Router) {
 	// Protected property operations - only authenticated users can edit/delete
 	apiRouter.HandleFunc("/properties/{PropertyId}", controllers.UpdateProperty).Methods("PUT")
 	apiRouter.HandleFunc("/properties/{PropertyId}", controllers.DeleteProperty).Methods("DELETE")
+
+	// Admin password change
+	apiRouter.HandleFunc("/admin/change-password", controllers.ChangeAdminPassword).Methods("POST")
 }
