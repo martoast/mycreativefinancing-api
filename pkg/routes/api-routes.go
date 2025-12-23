@@ -31,4 +31,8 @@ var RegisterRoutes = func(router *mux.Router) {
 
 	// Admin password change
 	apiRouter.HandleFunc("/admin/change-password", controllers.ChangeAdminPassword).Methods("POST")
+
+	// Admin deleted properties management
+	apiRouter.HandleFunc("/admin/deleted-properties", controllers.GetDeletedProperties).Methods("GET")
+	apiRouter.HandleFunc("/admin/properties/restore", controllers.RestoreProperties).Methods("POST")
 }

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"api/pkg/middleware"
 	"api/pkg/models"
 	"api/pkg/utils"
 
@@ -217,4 +218,103 @@ func UpdateProperty(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+}
+
+// GetDeletedProperties returns all soft-deleted properties (admin only)
+func GetDeletedProperties(w http.ResponseWriter, r *http.Request) {
+	// Check if user is admin
+	userContext, ok := middleware.GetUserFromContext(r.Context())
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	if !userContext.IsAdmin {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	// Get query parameters for pagination
+	pageStr := r.URL.Query().Get("page")
+	pageSizeStr := r.URL.Query().Get("pageSize")
+
+	// Default values
+	page := 1
+	pageSize := 10
+
+	var err error
+	if pageStr != "" {
+		page, err = strconv.Atoi(pageStr)
+		if err != nil {
+			http.Error(w, "Invalid page parameter", http.StatusBadRequest)
+			return
+		}
+	}
+
+	if pageSizeStr != "" {
+		pageSize, err = strconv.Atoi(pageSizeStr)
+		if err != nil {
+			http.Error(w, "Invalid pageSize parameter", http.StatusBadRequest)
+			return
+		}
+	}
+
+	offset := (page - 1) * pageSize
+
+	// Get deleted properties
+	properties, total := models.GetDeletedProperties(pageSize, offset)
+
+	response := map[string]interface{}{
+		"properties": properties,
+		"total":      total,
+		"page":       page,
+		"pageSize":   pageSize,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(response)
+}
+
+// RestorePropertiesRequest is the request body for restoring properties
+type RestorePropertiesRequest struct {
+	IDs []int64 `json:"ids"`
+}
+
+// RestoreProperties restores one or more soft-deleted properties (admin only)
+func RestoreProperties(w http.ResponseWriter, r *http.Request) {
+	// Check if user is admin
+	userContext, ok := middleware.GetUserFromContext(r.Context())
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	if !userContext.IsAdmin {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	// Parse request body
+	var req RestorePropertiesRequest
+	utils.ParseBody(r, &req)
+
+	if len(req.IDs) == 0 {
+		http.Error(w, "At least one property ID is required", http.StatusBadRequest)
+		return
+	}
+
+	// Restore the properties
+	restored, err := models.RestoreProperties(req.IDs)
+	if err != nil {
+		http.Error(w, "Failed to restore properties", http.StatusInternalServerError)
+		return
+	}
+
+	response := map[string]interface{}{
+		"message":  fmt.Sprintf("Successfully restored %d properties", restored),
+		"restored": restored,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(response)
 }

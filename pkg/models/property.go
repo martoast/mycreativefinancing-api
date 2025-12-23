@@ -135,6 +135,39 @@ func DeleteProperty(ID int64) Property {
 	return property
 }
 
+// GetDeletedProperties returns all soft-deleted properties with pagination
+func GetDeletedProperties(limit int, offset int) ([]Property, int64) {
+	var properties []Property
+	var total int64
+
+	query := db.Unscoped().Model(&Property{}).Where("deleted_at IS NOT NULL")
+	query.Count(&total)
+	query.Order("deleted_at DESC").Limit(limit).Offset(offset).Find(&properties)
+
+	return properties, total
+}
+
+// RestoreProperty restores a soft-deleted property by ID
+func RestoreProperty(ID int64) error {
+	result := db.Unscoped().Model(&Property{}).Where("id = ? AND deleted_at IS NOT NULL", ID).Update("deleted_at", nil)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+	return nil
+}
+
+// RestoreProperties restores multiple soft-deleted properties by IDs
+func RestoreProperties(ids []int64) (int64, error) {
+	result := db.Unscoped().Model(&Property{}).Where("id IN ? AND deleted_at IS NOT NULL", ids).Update("deleted_at", nil)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return result.RowsAffected, nil
+}
+
 func SeedProperties() {
 	// Example set of properties to seed
 	properties := []Property{
